@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { GlobalContextProvider } from "@/context/GlobalContext";
 import Sidebar from "@/app/components/Sidebar";
 import Player from "@/app/components/Player";
+import SearchSection from "@/app/components/SearchSection";
 
 const inter = Montserrat({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function AppWrapper({ children }) {
                             </div>
                         )}
                         <div>
+                            <SearchSection />
                             {children}
                         </div>
                     </div>

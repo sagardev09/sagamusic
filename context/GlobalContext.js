@@ -16,6 +16,10 @@ export const GlobalContextProvider = ({ children }) => {
     const [homemusic, sethomemusic] = useState([])
     const [albums, setalbums] = useState([])
     const [trending, settrending] = useState([])
+    const [songs, setsongs] = useState([])
+    const [isPlaying, setisPlaying] = useState(false)
+    const [currentSong, setcurrentSong] = useState(null)
+    const [SearchSongs, setSearchSongs] = useState([])
     // const [error, setError] = useState(null);
 
     //sign up / create the user
@@ -94,17 +98,75 @@ export const GlobalContextProvider = ({ children }) => {
 
     const fetchMusicHomePage = async () => {
         try {
-            const res = await axios.get("https://saavn.me/modules?language=hindi,english")
+            const res = await axios.get("https://saavn.dev/modules?language=hindi,english")
             const { data } = await res.data
             // sethomemusic(data)
+            console.log(data);
             setalbums(data.albums)
             settrending(data.trending)
-            console.log(data);
 
         } catch (error) {
             console.log(error);
         }
     }
+
+
+    const playMusic = async (music, name, duration, image, id, primaryArtists) => {
+        if (currentSong && currentSong.id === id) {
+            if (isPlaying) {
+                setisPlaying(false);
+                currentSong.audio.pause();
+            } else {
+                setisPlaying(true);
+                await currentSong.audio.play();
+            }
+        } else {
+            if (currentSong) {
+                currentSong.audio.pause();
+                setisPlaying(false);
+            }
+            const newAudio = new Audio(music[4].link)
+            setcurrentSong({
+                name,
+                duration,
+                image: image[2].link,
+                id,
+                audio: newAudio,
+                primaryArtists
+            })
+            setisPlaying(true);
+            console.log(currentSong);
+            await newAudio.play();
+        }
+    }
+
+    const nextSong = () => {
+        if (currentSong) {
+            const index = songs.findIndex((song) => song.id === currentSong.id);
+            if (index === songs.length - 1) {
+                const { downloadUrl, name, duration, image, id, primaryArtists } = songs[0];
+                playMusic(downloadUrl, name, duration, image, id, primaryArtists);
+            } else {
+                const { downloadUrl, name, duration, image, id, primaryArtists } = songs[index + 1];
+                playMusic(downloadUrl, name, duration, image, id, primaryArtists);
+            }
+        }
+    };
+
+    const prevSong = () => {
+        if (currentSong) {
+            const index = songs.findIndex((song) => song.id === currentSong.id);
+            if (index === 0) {
+                const { downloadUrl, name, duration, image, id, primaryArtists } = songs[songs.length - 1];
+                playMusic(downloadUrl, name, duration, image, id, primaryArtists);
+            } else {
+                const { downloadUrl, name, duration, image, id, primaryArtists } = songs[index - 1];
+                playMusic(downloadUrl, name, duration, image, id, primaryArtists);
+            }
+        }
+    };
+
+
 
 
 
@@ -126,7 +188,7 @@ export const GlobalContextProvider = ({ children }) => {
 
 
     return (
-        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums }}>
+        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs }}>
             {children}
         </GlobalContext.Provider>
     );
