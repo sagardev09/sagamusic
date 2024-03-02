@@ -26,7 +26,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className='w-[20vw] bg-slate-100 flex flex-col h-screen pt-4 justify-between'>
+        <div className='lg:w-[20vw] hidden bg-slate-100 lg:flex lg:flex-col h-screen pt-4 justify-between'>
             {user ? <div className='flex flex-col items-center justify-center gap-2'>
                 <div src="" className='bg-indigo-500 h-[120px] w-[120px] rounded-full ' alt="" />
                 <h1>username : @{user?.email.substring(0, 4)}</h1>
@@ -111,7 +111,7 @@ const Sidebar = () => {
                     </div>
                 </div>
             </div>
-            <div className='w-full bg-red-500 rounded-sm h-[100px]'></div>
+            <div className='w-full bg-indigo-500 rounded-sm h-[100px]'></div>
         </div>
     )
 }

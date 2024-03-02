@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function Home() {
 
-  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, SearchSongs } = useAppContext()
+  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, } = useAppContext()
   useEffect(() => {
     fetchMusicHomePage()
     console.log(homemusic);
@@ -40,7 +40,6 @@ export default function Home() {
     <main className="p-4 h-screen overflow-y-auto overflow-hidden mx-auto py-16 relative ">
       <div className="absolute right-4 top-3 w-[400px]">
         <label for="Search" class="sr-only"> Search </label>
-
         <input
           type="text"
           id="Search"
@@ -74,21 +73,25 @@ export default function Home() {
 
       </div>
       <h1 className="text-2xl font-bold">Trending</h1>
-      <div className="flex items-center justify-start flex-wrap gap-4 py-3">
+      <div className="flex items-center md:justify-start justify-between flex-wrap gap-2 py-3 mx-auto w-full">
         {
           trending?.albums?.map((item, index) => {
             return (
-              <AlbumCard key={index} {...item} />
+              <div key={index} className=" mx-auto">
+                <AlbumCard  {...item} />
+              </div>
             )
           })
         }
       </div>
       <h1 className="text-2xl font-bold">Albums</h1>
-      <div className="flex items-center flex-wrap justify-start gap-6 py-3">
+      <div className="flex items-center flex-wrap md:justify-start justify-between gap-2 py-3 mx-auto w-full">
         {
           albums?.map((item, index) => {
             return (
-              <AlbumCard key={index} {...item} />
+              <div key={index} className="mx-auto">
+                <AlbumCard  {...item} />
+              </div>
             )
           })
         }

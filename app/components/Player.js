@@ -67,9 +67,9 @@ const Player = () => {
     };
 
     return (
-        <div className='fixed bottom-0 left-0 right-0 bg-slate-100 flex flex-col z-10'>
-            <input
-                type="range"
+        <div className='fixed bottom-4 shadow-xl rounded-md p-6 left-0 right-0 bg-slate-100 flex flex-col z-10 max-w-2xl mx-auto gap-2'>
+
+            <input type="range"
                 name="progress"
                 id="progress"
                 min={0}
@@ -78,20 +78,49 @@ const Player = () => {
                 value={0}
                 ref={inputref}
                 onChange={handleProgressChange}
-                className="w-full h-[5px] text-purple-400 range"
-            />
+                class="w-full bg-transparent range cursor-pointer appearance-none disabled:opacity-50 disabled:pointer-events-none focus:outline-none
+[&::-webkit-slider-thumb]:w-2.5
+[&::-webkit-slider-thumb]:h-2.5
+[&::-webkit-slider-thumb]:-mt-0.5
+[&::-webkit-slider-thumb]:appearance-none
+[&::-webkit-slider-thumb]:bg-white
+[&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(112,39,235,1)]
+[&::-webkit-slider-thumb]:rounded-full
+[&::-webkit-slider-thumb]:transition-all
+[&::-webkit-slider-thumb]:duration-150
+[&::-webkit-slider-thumb]:ease-in-out
+
+[&::-moz-range-thumb]:w-2.5
+[&::-moz-range-thumb]:h-2.5
+[&::-moz-range-thumb]:appearance-none
+[&::-moz-range-thumb]:bg-red-500
+[&::-moz-range-thumb]:border-2
+[&::-moz-range-thumb]:border-red-600
+
+[&::-moz-range-thumb]:transition-all
+[&::-moz-range-thumb]:duration-150
+[&::-moz-range-thumb]:ease-in-out
+
+[&::-webkit-slider-runnable-track]:w-full
+[&::-webkit-slider-runnable-track]:h-2
+[&::-webkit-slider-runnable-track]:bg-purple-400
+[&::-webkit-slider-runnable-track]:rounded-full
+[&::-moz-range-track]:w-full
+[&::-moz-range-track]:h-2
+[&::-moz-range-track]:bg-gray-100
+"  />
 
             <div className='flex items-center justify-between px-4 pb-2'>
                 <div className='flex items-center justify-start gap-5 lg:w-[30vw]'>
                     <img className='rounded-full h-[50px] w-[50px]'
                         src={currentSong?.image} alt="" />
                     <div className='hidden lg:block'>
-                        <span>{currentSong?.name}</span>
-                        <p className='text-xs '>{currentSong?.primaryArtists}</p>
+                        <span className='text-[14px]'>{currentSong?.name}</span>
+                        <p className='text-[8px] '>{currentSong?.primaryArtists}</p>
                     </div>
                 </div>
                 <div className='flex text-2xl lg:text-3xl gap-4 lg:gap-6 lg:w-[40vw] justify-center'>
-                    <BiRepeat className='text-gray-400 cursor-pointer' />
+
                     <IoMdSkipBackward className='text-gray-700 hover:text-gray-500 cursor-pointer'
                         onClick={prevSong} />
                     {isPlaying ? (
@@ -123,9 +152,9 @@ const Player = () => {
                     )}
                     <IoMdSkipForward className='text-gray-700 hover:text-gray-500 cursor-pointer'
                         onClick={nextSong} />
-                    <PiShuffleBold className='text-gray-400 cursor-pointer' />
+
                 </div>
-                <div className='flex text-2xl lg:text-3xl gap-4 lg:gap-6 lg:w-[30vw] items-center justify-end'
+                <div className='flex text-2xl lg:text-3xl gap-4 lg:gap-6 lg:w-[30vw] relative items-center justify-end'
 
                 >
                     <LuHardDriveDownload className='text-gray-700 hover:text-gray-500 cursor-pointer'

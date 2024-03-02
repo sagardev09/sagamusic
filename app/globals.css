@@ -18,7 +18,20 @@ input[type="range"]::-webkit-slider-thumb {
   width: 10px;
   height: 10px;
   border-radius: 30px;
-  background-color: indigo;
+}
+.range1 {
+  -webkit-appearance: none;
+  width: 100%;
+  margin-bottom: 13.8px;
+  background-color: #e8e8e8ff;
+}
+
+.range1::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 30px;
+  background-color: purple;
 }
 
 .scroll-hide {

@@ -23,8 +23,8 @@ const VolumeController = ({ isvolumevisible }) => {
     };
 
     return (
-        <div className={`${isvolumevisible ? " block" : "hidden"} w-[180px] absolute -rotate-90 bottom-[120px] -right-[55px] shadow-md px-2 rounded-lg bg-gray-100  `}>
-            <input type="range" min={0} max={100} step={0.1} value={volume} onChange={handleVolumeChange} className='h-[5px] text-indigo-500 range mb-10' />
+        <div className={`${isvolumevisible ? " block" : "hidden"} w-[180px] absolute -rotate-90 bottom-[120px] -right-[70px] shadow-md px-2 rounded-lg bg-gray-100  `}>
+            <input type="range" min={0} max={100} step={0.1} value={volume} onChange={handleVolumeChange} className='h-[5px] text-indigo-500 range1 mb-10' />
         </div>
     )
 }
