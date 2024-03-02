@@ -17,7 +17,6 @@ export default function Home() {
       setSearchSongs([]);
       return; // Exit the function early if the input is empty
     }
-
     try {
       const res = await axios.get(`https://saavn.dev/search/songs?query=${encodeURIComponent(e.target.value.trim())}`);
       const { data } = res.data;
@@ -38,7 +37,7 @@ export default function Home() {
 
   return (
     <main className="p-4 h-screen overflow-y-auto overflow-hidden mx-auto py-16 relative ">
-      <div className="absolute right-4 top-3 w-[400px]">
+      <div className="absolute lg:right-4 right-0 top-3 lg:w-[400px] w-full">
         <label for="Search" class="sr-only"> Search </label>
         <input
           type="text"
@@ -47,7 +46,7 @@ export default function Home() {
           autoComplete="off"
           autoCorrect="off"
           onChange={SearchSong}
-          class="w-[400px] rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm px-3 border"
+          class="lg:w-[400px] w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm px-3 border"
         />
 
         <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">

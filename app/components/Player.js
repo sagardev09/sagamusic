@@ -112,7 +112,7 @@ const Player = () => {
 
             <div className='flex items-center justify-between px-4 pb-2'>
                 <div className='flex items-center justify-start gap-5 lg:w-[30vw]'>
-                    <img className='rounded-full h-[50px] w-[50px]'
+                    <img className={!isPlaying ? 'rounded-full h-[50px] w-[50px]' : 'rounded-full h-[50px] w-[50px] animate-spin'}
                         src={currentSong?.image} alt="" />
                     <div className='hidden lg:block'>
                         <span className='text-[14px]'>{currentSong?.name}</span>

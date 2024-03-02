@@ -1,8 +1,6 @@
 "use client"
 import { Montserrat } from "next/font/google";
 import "../app/globals.css";
-
-
 import { usePathname } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +14,7 @@ const inter = Montserrat({ subsets: ["latin"] });
 export default function AppWrapper({ children }) {
 
     const pathname = usePathname()
+
 
     const pathsWithoutSidebar = ['/register', '/login'];
 
