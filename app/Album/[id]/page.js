@@ -31,8 +31,9 @@ const Album = ({ params }) => {
     }, [params.id])
 
     return (
-        <div className='flex flex-col lg:flex-row justify-center items-center gap-8 lg:gap-24 h-screen mb-[200px] lg:my-0 mx-2 lg:mx-auto  lg:w-[80vw] w-[100vw] relative'>
-            <div className='absolute h-[50px] w-[50px] flex items-center  justify-center top-4 left-4 shadow-2xl rounded-full bg-gray-100 hover:bg-gray-200'
+        <div className='flex flex-col lg:flex-row justify-center items-center gap-8 lg:gap-24
+         h-screen lg:pb-20 pb-[200px] py-56 lg:my-10 mx-2 lg:mx-auto  overflow-scroll lg:w-[80vw] w-[100vw] relative'>
+            <div className='absolute h-[50px] w-[50px] flex items-center justify-center top-4 left-4 shadow-2xl rounded-full bg-gray-100 hover:bg-gray-200'
                 onClick={() => router.back()}>
                 <FaArrowLeft />
             </div>

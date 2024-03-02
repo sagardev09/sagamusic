@@ -67,7 +67,7 @@ const Player = () => {
     };
 
     return (
-        <div className='fixed bottom-4 shadow-xl rounded-md p-6 left-0 right-0 bg-slate-100 flex flex-col z-10 max-w-2xl mx-auto gap-2'>
+        <div className='fixed bottom-4 shadow-xl rounded-md p-6 left-0 right-0 bg-slate-100 flex flex-col z-50 max-w-2xl mx-auto gap-2'>
 
             <input type="range"
                 name="progress"

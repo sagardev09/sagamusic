@@ -6,16 +6,18 @@ import axios from "axios";
 
 export default function Home() {
 
-  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, } = useAppContext()
+  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, setclosemenu } = useAppContext()
   useEffect(() => {
     fetchMusicHomePage()
     console.log(homemusic);
   }, [])
 
+  const [songtitle, setsongtitle] = useState("")
+
   const SearchSong = async (e) => {
-    if (e.target.value.trim() === "") { // Check if the input value is empty after trimming whitespace
+    if (e.target.value.trim() === "") {
       setSearchSongs([]);
-      return; // Exit the function early if the input is empty
+      return;
     }
     try {
       const res = await axios.get(`https://saavn.dev/search/songs?query=${encodeURIComponent(e.target.value.trim())}`);
@@ -24,13 +26,34 @@ export default function Home() {
       if (data.results.length === 0) {
         setSearchSongs([]);
       } else {
+        setclosemenu(true)
         setSearchSongs(data.results);
       }
 
       console.log(data.results);
     } catch (error) {
       console.error("Error occurred while fetching data:", error);
-      // Handle error as needed, for example, display an error message to the user
+    }
+  }
+  const SearchSongOn = async (e) => {
+    if (songtitle.trim() === "") {
+      setSearchSongs([]);
+      return;
+    }
+    try {
+      const res = await axios.get(`https://saavn.dev/search/songs?query=${encodeURIComponent(songtitle.trim())}`);
+      const { data } = res.data;
+
+      if (data.results.length === 0) {
+        setSearchSongs([]);
+      } else {
+        setclosemenu(true)
+        setSearchSongs(data.results);
+      }
+
+      console.log(data.results);
+    } catch (error) {
+      console.error("Error occurred while fetching data:", error);
     }
   }
 
@@ -45,12 +68,18 @@ export default function Home() {
           placeholder="Search for..."
           autoComplete="off"
           autoCorrect="off"
-          onChange={SearchSong}
+          value={songtitle}
+          onChange={(e) => {
+            SearchSong(e);
+            setsongtitle(e.target.value);
+          }}
           class="lg:w-[400px] w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm px-3 border"
         />
 
         <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
-          <button type="button" class="text-gray-600 hover:text-gray-700">
+          <button type="button" class="text-gray-600 hover:text-gray-700"
+            onClick={() => SearchSongOn()}
+          >
             <span class="sr-only">Search</span>
 
             <svg
@@ -71,7 +100,7 @@ export default function Home() {
         </span>
 
       </div>
-      <h1 className="text-2xl font-bold">Trending</h1>
+      <h1 className="text-2xl  py-4 font-bold pl-[20px]">Trending</h1>
       <div className="flex items-center md:justify-start justify-between flex-wrap gap-2 py-3 mx-auto w-full">
         {
           trending?.albums?.map((item, index) => {
@@ -83,8 +112,8 @@ export default function Home() {
           })
         }
       </div>
-      <h1 className="text-2xl font-bold">Albums</h1>
-      <div className="flex items-center flex-wrap md:justify-start justify-between gap-2 py-3 mx-auto w-full">
+      <h1 className="text-4xl py-4 font-bold pl-[20px]">Albums</h1>
+      <div className="flex items-center flex-wrap md:justify-start md:pb-3 pb-[90px] justify-between gap-2 py-3 mx-auto w-full">
         {
           albums?.map((item, index) => {
             return (

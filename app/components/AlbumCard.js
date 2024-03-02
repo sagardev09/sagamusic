@@ -11,10 +11,10 @@ const AlbumCard = ({ name, artists, id, image }) => {
                 <div className='h-[180px] shadow-md rounded-full w-[180px] relative flex items-center justify-center group-hover:animate-spin-slow'>
                     <img src={image[2].link} className='rounded-full h-full w-full  object-contain' alt="" />
                     <span className='absolute left-1/2 top-1/2 h-[50px] w-[50px] rounded-full bg-black translate-x-[-50%] translate-y-[-50%] z-10'></span>
-                    <span className='absolute h-[35px] w-[35px] rounded-full left-1/2 top-1/2 bg-white translate-x-[-50%] translate-y-[-50%] z-20'></span>
+                    <span className='absolute h-[35px] w-[35px] rounded-full left-1/2 top-1/2 bg-white translate-x-[-50%] translate-y-[-50%] z-[15]'></span>
                 </div>
                 <div className='text-[13px] w-full flex flex-col items-center justify-center gap-1'>
-                    <span className='text-gray-600 font-semibold overflow-x-clip text-center'>{displayName}</span>
+                    <span className='text-gray-600 font-semibold overflow-x-clip text-center lg:w-[200px] md:w-[180px] w-[150px]'>{displayName}</span>
                     <p className='font-thin text-gray-500 overflow-y-clip h-[50px]'>
                         {artists.slice(0, 1).map((item, index) => (
                             index < 1 ? `${item.name}, ` : index === 1 ? `${item.name}...` : null

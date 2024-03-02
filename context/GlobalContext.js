@@ -20,6 +20,7 @@ export const GlobalContextProvider = ({ children }) => {
     const [isPlaying, setisPlaying] = useState(false)
     const [currentSong, setcurrentSong] = useState(null)
     const [SearchSongs, setSearchSongs] = useState([])
+    const [closemenu, setclosemenu] = useState(false)
     // const [error, setError] = useState(null);
 
     //sign up / create the user
@@ -188,7 +189,7 @@ export const GlobalContextProvider = ({ children }) => {
 
 
     return (
-        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs }}>
+        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs, setclosemenu, closemenu }}>
             {children}
         </GlobalContext.Provider>
     );

@@ -16,9 +16,13 @@ export default function AppWrapper({ children }) {
     const pathname = usePathname()
 
 
+
     const pathsWithoutSidebar = ['/register', '/login'];
 
     const shouldRenderSidebar = !pathsWithoutSidebar.includes(pathname);
+
+
+
 
     return (
         <html lang="en">
@@ -31,8 +35,8 @@ export default function AppWrapper({ children }) {
                                 <Sidebar />
                             </div>
                         )}
-                        <div>
-                            <SearchSection />
+                        <div >
+                            {<SearchSection />}
                             {children}
                         </div>
                     </div>
