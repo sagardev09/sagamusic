@@ -31,22 +31,23 @@ const Album = ({ params }) => {
     }, [params.id])
 
     return (
-        <div className='flex flex-col lg:flex-row justify-center items-center gap-8 lg:gap-24
-         h-screen lg:pb-20 pb-[200px] py-56 lg:my-10 mx-2 lg:mx-auto  overflow-scroll lg:w-[80vw] w-[100vw] relative'>
+        <div className='flex flex-col  lg:flex-row justify-center items-center gap-8 lg:gap-24
+         h-screen  lg:pb-20  lg:py-56 pb-[170px] lg:pt-0 pt-[80px] lg:my-0  lg:px-10 px-2  lg:mx-auto  overflow-x-hidden overflow-y-scroll lg:w-[80vw]
+          w-[100vw] relative'>
             <div className='absolute h-[50px] w-[50px] flex items-center justify-center top-4 left-4 shadow-2xl rounded-full bg-gray-100 hover:bg-gray-200'
                 onClick={() => router.back()}>
                 <FaArrowLeft />
             </div>
-            <div className='flex lg:flex-row flex-col items-center justify-center text-center gap-4'>
-                <div className=''>
-                    <img src={songimg} alt={Album.name} className='mx-auto mb-4 h-[250px] w-[250px] rounded-full object-cover' />
+            <div className='flex lg:flex-row flex-col items-center justify-center text-center gap-4 '>
+                <div className='h-[250px] w-[250px]'>
+                    <img src={songimg} alt={Album.name} className='mx-auto h-full w-full  rounded-full object-cover' />
                 </div>
                 <div>
                     <h1 className='font-thin text-lg'>Album Name :{Album.name}</h1>
-                    <p className='font-extralight text-xs'>By {Album.primaryArtists} . {Album.songCount} Songs</p>
+                    <p className='font-extralight text-xs'>By {Album.primaryArtists} <br /> {Album.songCount} Songs</p>
                 </div>
             </div>
-            <div className='py-2'>
+            <div className='lg:py-2 pt-2 h-[60vh] overflow-x-hidden overflow-y-scroll shadow-lg'>
                 {
                     Album.songs?.map((item, index) => {
                         return (

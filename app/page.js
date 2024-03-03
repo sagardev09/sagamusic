@@ -60,7 +60,7 @@ export default function Home() {
 
   return (
     <main className="p-4 h-screen overflow-y-auto overflow-hidden mx-auto py-16 relative ">
-      <div className="absolute lg:right-4 right-0 top-3 lg:w-[400px] w-full">
+      <div className="absolute lg:right-4 right-0 top-3 lg:w-[400px] w-full ">
         <label for="Search" class="sr-only"> Search </label>
         <input
           type="text"

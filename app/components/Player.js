@@ -2,12 +2,16 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { BiRepeat } from 'react-icons/bi'
 import { IoMdSkipBackward, IoMdSkipForward } from "react-icons/io"
-import { PiShuffleBold } from "react-icons/pi"
-import { FaPause, FaPlay } from 'react-icons/fa'
 import { HiSpeakerWave } from "react-icons/hi2"
 import { LuHardDriveDownload } from "react-icons/lu"
 import VolumeController from './VolumeController'
 import { useAppContext } from '@/context/GlobalContext'
+import Image from 'next/image'
+import playbtn from "@/public/playbtn.svg"
+import Pause from "@/public/Pause.png"
+import back from "@/public/backbtn.png"
+import forward from "@/public/forwardbtn.png"
+
 
 const Player = () => {
 
@@ -67,7 +71,7 @@ const Player = () => {
     };
 
     return (
-        <div className='fixed bottom-4 shadow-xl rounded-md p-6 left-0 right-0 bg-slate-100 flex flex-col z-50 max-w-2xl mx-auto gap-2'>
+        <div className='fixed bottom-4 shadow-2xl rounded-xl p-6 left-0 right-0 bg-slate-100 flex flex-col z-50 max-w-2xl mx-auto gap-2'>
 
             <input type="range"
                 name="progress"
@@ -110,35 +114,24 @@ const Player = () => {
 [&::-moz-range-track]:bg-gray-100
 "  />
 
-            <div className='flex items-center justify-between px-4 pb-2'>
+            <div className='flex items-center justify-between px-4 p-1'>
                 <div className='flex items-center justify-start gap-5 lg:w-[30vw]'>
                     <img className={!isPlaying ? 'rounded-full h-[50px] w-[50px]' : 'rounded-full h-[50px] w-[50px] animate-spin'}
                         src={currentSong?.image} alt="" />
                     <div className='hidden lg:block'>
                         <span className='text-[14px]'>{currentSong?.name}</span>
-                        <p className='text-[8px] '>{currentSong?.primaryArtists}</p>
                     </div>
                 </div>
-                <div className='flex text-2xl lg:text-3xl gap-4 lg:gap-6 lg:w-[40vw] justify-center'>
-
-                    <IoMdSkipBackward className='text-gray-700 hover:text-gray-500 cursor-pointer'
-                        onClick={prevSong} />
+                <div className='flex text-2xl lg:text-3xl gap-4 items-center lg:gap-6 lg:w-[40vw] justify-center'>
+                    <div
+                        className='relative cursor-pointer p-2 h-[45px] w-[45px] '
+                        onClick={prevSong}
+                    >
+                        <span className='absolute bg-purple-500 blur-xl rounded-3xl h-6 w-8 right-0 bottom-[-10px] z-[-1]'></span>
+                        <Image src={back} alt='' className='h-full w-full z-10' />
+                    </div>
                     {isPlaying ? (
-                        <FaPause
-                            className="text-gray-700 hover:text-gray-500 cursor-pointer"
-                            onClick={() =>
-                                playMusic(
-                                    currentSong?.audio,
-                                    currentSong.name,
-                                    currentSong.duration,
-                                    currentSong.image,
-                                    currentSong.id
-                                )
-                            }
-                        />
-                    ) : (
-                        <FaPlay
-                            className="text-gray-700 hover:text-gray-500 cursor-pointer"
+                        <div className='bg-indigo-500 p-2 h-14 w-14 shadow-xl flex items-center justify-center cursor-pointer rounded-full'
                             onClick={() =>
                                 playMusic(
                                     currentSong.audio,
@@ -146,21 +139,43 @@ const Player = () => {
                                     currentSong.duration,
                                     currentSong.image,
                                     currentSong.id
-                                )
-                            }
-                        />
+                                )}>
+                            <Image src={Pause}
+                                alt=""
+                            />
+                        </div>
+                    ) : (
+                        <div className='bg-indigo-500 cursor-pointer p-2 h-14 w-14 shadow-xl flex items-center justify-center rounded-full'
+                            onClick={() =>
+                                playMusic(
+                                    currentSong.audio,
+                                    currentSong.name,
+                                    currentSong.duration,
+                                    currentSong.image,
+                                    currentSong.id
+                                )}>
+                            <Image src={playbtn}
+                                alt=""
+                            />
+                        </div>
+
                     )}
-                    <IoMdSkipForward className='text-gray-700 hover:text-gray-500 cursor-pointer'
-                        onClick={nextSong} />
+                    <div
+                        className='relative cursor-pointer p-2 h-[45px] w-[45px] '
+                        onClick={nextSong}
+                    >
+                        <span className='absolute bg-purple-500 blur-xl rounded-3xl h-6 w-8 right-0 bottom-[-10px] z-[-1]'></span>
+                        <Image src={forward} alt='' className='h-full w-full z-10' />
+                    </div>
 
                 </div>
                 <div className='flex text-2xl lg:text-3xl gap-4 lg:gap-6 lg:w-[30vw] relative items-center justify-end'
 
                 >
-                    <LuHardDriveDownload className='text-gray-700 hover:text-gray-500 cursor-pointer'
+                    <LuHardDriveDownload className='text-indigo-500 hover:text-indigo-600 cursor-pointer'
                         onClick={() => handleDownloadSong(currentSong.audio.src)}
                     />
-                    <HiSpeakerWave className='text-gray-700 hover:text-gray-500 cursor-pointer h-[50px] hidden lg:block'
+                    <HiSpeakerWave className='text-indigo-500 hover:text-indigo-600 cursor-pointer h-[50px] hidden lg:block'
                         onClick={() => setisvolumevisible(!isvolumevisible)} />
                     <VolumeController isvolumevisible={isvolumevisible} />
                 </div>
