@@ -1,7 +1,7 @@
 "use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { app } from '@/utils/firebase.config';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -21,7 +21,32 @@ export const GlobalContextProvider = ({ children }) => {
     const [currentSong, setcurrentSong] = useState(null)
     const [SearchSongs, setSearchSongs] = useState([])
     const [closemenu, setclosemenu] = useState(false)
+    const [IsProfileModal, setIsProfileModal] = useState(false)
+    const [UserDetails, setUserDetails] = useState({})
     // const [error, setError] = useState(null);
+
+
+
+
+    const FetchCurrUserDetails = async (userId) => {
+        try {
+            // Assuming "users" is the collection where user details are stored
+            const q = query(collection(db, "users"), where("userid", "==", userId));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    setUserDetails(userData); // Update state with fetched user data
+                    console.log(userData);
+                });
+            } else {
+                console.log("No matching documents.");
+            }
+        } catch (error) {
+            console.log("Error getting documents: ", error);
+        }
+    }
 
     //sign up / create the user
 
@@ -33,16 +58,21 @@ export const GlobalContextProvider = ({ children }) => {
                 console.log(user);
                 //store the user in the database
                 const docRef = addDoc(collection(db, "users"), {
+                    userid: user.uid,
                     name: userdata.name,
                     email: userdata.email,
+                    imgurl: "",
+
                 });
-                console.log("Document written with ID: ", docRef.id);
+                console.log("Document written with ID: ", docRef);
             })
             .catch((err) => {
                 if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
                     console.log("The password is too weak.");
+                    setuser(null)
                 } else if (err.code === AuthErrorCodes.EMAIL_EXISTS) {
                     console.log("The email address is already in use.");
+                    setuser(null)
                 } else {
                     console.log(err.code);
                     alert(err.code);
@@ -62,6 +92,7 @@ export const GlobalContextProvider = ({ children }) => {
                     if (User) {
                         // User is signed in
                         setuser(User);
+                        console.log(loggedInUser, "User");
                     } else {
                         // User is signed out
                         setuser(null);
@@ -101,8 +132,6 @@ export const GlobalContextProvider = ({ children }) => {
         try {
             const res = await axios.get("https://saavn.dev/modules?language=hindi,english")
             const { data } = await res.data
-            // sethomemusic(data)
-            console.log(data);
             setalbums(data.albums)
             settrending(data.trending)
 
@@ -167,16 +196,15 @@ export const GlobalContextProvider = ({ children }) => {
         }
     };
 
-
-
-
-
     useEffect(() => {
         // Use onAuthStateChanged to handle initial authentication state
         const unsubscribe = onAuthStateChanged(auth, (User) => {
             if (User) {
                 // User is signed in
+                FetchCurrUserDetails(User.uid)
+                console.log("UserDetails", UserDetails);
                 setuser(User);
+                console.log(User, "User");
             } else {
                 // User is signed out
                 setuser(null);
@@ -189,7 +217,7 @@ export const GlobalContextProvider = ({ children }) => {
 
 
     return (
-        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs, setclosemenu, closemenu }}>
+        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs, setclosemenu, closemenu, setIsProfileModal, IsProfileModal, UserDetails }}>
             {children}
         </GlobalContext.Provider>
     );

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link';
 import { IoHomeSharp } from "react-icons/io5";
 import { usePathname, useRouter } from 'next/navigation';
@@ -11,12 +11,14 @@ import { MdRecentActors } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { FaGrinHearts } from "react-icons/fa";
 import { useAppContext } from '@/context/GlobalContext';
+import SettingModal from './SettingModal';
 
 
 const Sidebar = () => {
 
 
-    const { user, logout } = useAppContext()
+    const { user, logout, UserDetails } = useAppContext()
+    const [settingmodal, setsettingmodal] = useState(false)
 
     const pathname = usePathname()
     const router = useRouter()
@@ -26,10 +28,17 @@ const Sidebar = () => {
     }
 
     return (
-        <div className='lg:w-[20vw] hidden bg-slate-100 lg:flex lg:flex-col h-screen pt-4 justify-between'>
+        <div className='lg:w-[20vw] hidden bg-slate-100 lg:flex lg:flex-col h-screen py-4 justify-between relative'>
+            {
+                settingmodal ? <div className='absolute z-50 bottom-[90px] left-[9%]'>
+                    <SettingModal />
+                </div> : ""
+            }
             {user ? <div className='flex flex-col items-center justify-center gap-2'>
-                <div src="" className='bg-indigo-500 h-[120px] w-[120px] rounded-full ' alt="" />
-                <h1>username : @{user?.email.substring(0, 4)}</h1>
+                <div className='bg-indigo-500 h-[120px] w-[120px] rounded-full flex items-center justify-center'>
+                    <h1 className='font-bold text-6xl capitalize'>{user?.email.substring(0, 1)}</h1>
+                </div>
+                <h1>username : @{UserDetails?.name}</h1>
                 <h5>user email : {user?.email}</h5>
                 <button
                     onClick={logout}
@@ -111,7 +120,14 @@ const Sidebar = () => {
                     </div>
                 </div>
             </div>
-            <div className='w-full bg-indigo-500 rounded-sm h-[100px]'></div>
+            <div className='flex items-center justify-center rounded-sm h-[100px] w-full'>
+                {user && <button
+                    onClick={() => setsettingmodal(!settingmodal)}
+                    className="inline-block w-[90%] rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+                >
+                    Settings
+                </button>}
+            </div>
         </div>
     )
 }

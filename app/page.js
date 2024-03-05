@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import { useAppContext } from "@/context/GlobalContext";
 import AlbumCard from "./components/AlbumCard";
 import axios from "axios";
+import ProfileModal from "./components/ProfileModal";
 
 export default function Home() {
 
-  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, setclosemenu } = useAppContext()
+  const { fetchMusicHomePage, homemusic, trending, albums, setSearchSongs, setclosemenu, IsProfileModal } = useAppContext()
   useEffect(() => {
     fetchMusicHomePage()
     console.log(homemusic);
@@ -60,6 +61,9 @@ export default function Home() {
 
   return (
     <main className="p-4 h-screen overflow-y-auto overflow-hidden mx-auto py-16 relative ">
+      {IsProfileModal && <div className="absolute top-[50%] translate-y-[-50%] z-[1000] left-[45%] translate-x-[-50%]">
+        <ProfileModal />
+      </div>}
       <div className="absolute lg:right-4 right-0 top-3 lg:w-[400px] w-full ">
         <label for="Search" class="sr-only"> Search </label>
         <input
