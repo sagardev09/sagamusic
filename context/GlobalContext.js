@@ -1,16 +1,18 @@
 "use client"
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-import { getFirestore, collection, addDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, where, setDoc, doc } from "firebase/firestore";
 import { app } from '@/utils/firebase.config';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const GlobalContext = createContext();
 
 export const GlobalContextProvider = ({ children }) => {
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage();
 
     const [user, setuser] = useState(null)
     const [homemusic, sethomemusic] = useState([])
@@ -23,9 +25,51 @@ export const GlobalContextProvider = ({ children }) => {
     const [closemenu, setclosemenu] = useState(false)
     const [IsProfileModal, setIsProfileModal] = useState(false)
     const [UserDetails, setUserDetails] = useState({})
+    const [imageSrc, setImageSrc] = useState(null);
+    const [progresspercent, setProgresspercent] = useState(0);
+    const [ImgUrl, setImgUrl] = useState(null)
+    const [file, setfile] = useState(null)
     // const [error, setError] = useState(null);
 
+    const handleImageSelect = (event) => {
+        const selectedFile = event.target.files[0];
+        setfile(selectedFile);
+        console.log("selectedFile", selectedFile);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            setImageSrc(event.target.result);
+        };
+        reader.readAsDataURL(selectedFile);
+    };
 
+    const uploadImage = async () => {
+        if (!file) return;
+
+        const storageRef = ref(storage, `files/${UserDetails?.userid}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on("state_changed",
+            (snapshot) => {
+                const progress =
+                    Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                setProgresspercent(progress);
+            },
+            (error) => {
+                alert(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setImgUrl(downloadURL)
+                    setDoc(doc(db, "users", UserDetails?.userid), {
+                        ...UserDetails,
+                        imgurl: downloadURL
+                    });
+                    console.log(downloadURL);
+                });
+            }
+        );
+
+    };
 
 
     const FetchCurrUserDetails = async (userId) => {
@@ -56,29 +100,28 @@ export const GlobalContextProvider = ({ children }) => {
                 // Signed up 
                 const user = userCredential.user;
                 console.log(user);
-                //store the user in the database
-                const docRef = addDoc(collection(db, "users"), {
+
+                // Store the user in the database
+                const userRef = doc(db, "users", user.uid);
+                setDoc(userRef, {
                     userid: user.uid,
                     name: userdata.name,
                     email: userdata.email,
                     imgurl: "",
-
-                });
-                console.log("Document written with ID: ", docRef);
+                })
+                    .then(() => {
+                        console.log("Document successfully written!");
+                    })
+                    .catch((error) => {
+                        console.error("Error writing document: ", error);
+                    });
             })
-            .catch((err) => {
-                if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
-                    console.log("The password is too weak.");
-                    setuser(null)
-                } else if (err.code === AuthErrorCodes.EMAIL_EXISTS) {
-                    console.log("The email address is already in use.");
-                    setuser(null)
-                } else {
-                    console.log(err.code);
-                    alert(err.code);
-                }
+            .catch((error) => {
+                console.error("Error signing up: ", error.code);
+                alert(error.code);
+                setuser(null); // Assuming setuser is a state setter function
             });
-    }
+    };
 
     // login user  with email and password
 
@@ -217,7 +260,7 @@ export const GlobalContextProvider = ({ children }) => {
 
 
     return (
-        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs, setclosemenu, closemenu, setIsProfileModal, IsProfileModal, UserDetails }}>
+        <GlobalContext.Provider value={{ user, signup, login, logout, fetchMusicHomePage, homemusic, trending, albums, setsongs, songs, playMusic, isPlaying, currentSong, nextSong, prevSong, setSearchSongs, SearchSongs, setclosemenu, closemenu, setIsProfileModal, IsProfileModal, UserDetails, imageSrc, handleImageSelect, uploadImage, ImgUrl }}>
             {children}
         </GlobalContext.Provider>
     );

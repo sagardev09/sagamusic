@@ -17,7 +17,7 @@ import SettingModal from './SettingModal';
 const Sidebar = () => {
 
 
-    const { user, logout, UserDetails } = useAppContext()
+    const { user, logout, UserDetails, ImgUrl } = useAppContext()
     const [settingmodal, setsettingmodal] = useState(false)
 
     const pathname = usePathname()
@@ -35,8 +35,14 @@ const Sidebar = () => {
                 </div> : ""
             }
             {user ? <div className='flex flex-col items-center justify-center gap-2'>
-                <div className='bg-indigo-500 h-[120px] w-[120px] rounded-full flex items-center justify-center'>
-                    <h1 className='font-bold text-6xl capitalize'>{user?.email.substring(0, 1)}</h1>
+                <div className='bg-indigo-500 h-[120px] w-[120px] rounded-full flex items-center justify-center overflow-hidden'>
+                    {ImgUrl ? (
+                        <img src={ImgUrl} className='h-full w-full object-cover' alt="" />
+                    ) : UserDetails?.imgurl ? (
+                        <img src={UserDetails.imgurl} className='h-full w-full object-cover' alt="" />
+                    ) : (
+                        <h1 className='font-bold text-6xl capitalize'>{user?.email.substring(0, 1)}</h1>
+                    )}
                 </div>
                 <h1>username : @{UserDetails?.name}</h1>
                 <h5>user email : {user?.email}</h5>
